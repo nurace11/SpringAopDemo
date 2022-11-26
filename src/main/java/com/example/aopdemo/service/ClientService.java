@@ -23,50 +23,20 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-
     public CustomResponse<Client> getAll() {
-        List<Client> clientList;
-        try {
-            log.info("Try to get all clients");
-            clientList = clientRepository.findAll();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return new CustomResponse<>(null, CustomStatus.EXCEPTION);
-        }
-
-        log.info("All clients received");
+        List<Client> clientList = clientRepository.findAll();
         return new CustomResponse<>(clientList, CustomStatus.SUCCESS);
     }
 
     public CustomResponse<Client> getClientByName(String name) {
-        Client client;
-        try {
-            log.info("Try to get a client with name {}", name);
-            client = clientRepository.findClientByName(name).orElseThrow();
-        } catch (NoSuchElementException e) {
-            log.error(e.getMessage(), e);
-            return new CustomResponse<>(null, CustomStatus.NOT_FOUND);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return new CustomResponse<>(null, CustomStatus.EXCEPTION);
-        }
-
-        log.info("Client with name {} has been found", name);
+        Client client = clientRepository.findClientByName(name).orElseThrow();
         return new CustomResponse<>(Stream.of(client).collect(Collectors.toList()), CustomStatus.SUCCESS);
     }
 
     public CustomResponse<Client> addClient(Client client) {
         Client newClient;
+        newClient = clientRepository.save(client);// newClient have id, client does not
 
-        try {
-            log.info("Try to add client {} at {}", client, LocalDate.now());
-            newClient = clientRepository.save(client);// newClient have id, client does not
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return new CustomResponse<>(null, CustomStatus.EXCEPTION);
-        }
-
-        log.info("Client {} has been added", client.getName());
         return new CustomResponse<>(Stream.of(newClient).collect(Collectors.toList()), CustomStatus.SUCCESS);
     }
 }
