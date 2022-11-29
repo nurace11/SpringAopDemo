@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<center>
+    <script>
+
+    var countDownDate = new Date("2017-11-17T21:30:30Z").getTime();
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Seconds
+        if (distance <= 60000) {
+            document.getElementById("count1").innerHTML = seconds + "s ";
+        }
+        // Minutes
+        else if (distance <= 3600000) {
+            document.getElementById("count1").innerHTML = minutes + "m " + seconds + "s ";
+        }
+        // Hours
+        else if (distance <= 86400000) {
+            document.getElementById("count1").innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+        }
+        // Days
+        else if (distance > 86400000) {
+            document.getElementById("count1").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        }
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("count1").innerHTML = "You will be redirected now";
+        }
+    }, 1000);
+</script>
+    <p id="count1"></p>
+</center>
+</body>
+</html>
